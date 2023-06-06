@@ -6,7 +6,13 @@ import * as React from "react";
 import * as ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
 import "./index.css";
-
+import MyGigs from "./Pages/mygigs/MyGigs";
+import Messages from "./Pages/messages/Messages";
+import Orders from "./Pages/orders/Orders"
+import Gig from  "./Pages/gig/Gig"
+import Gigs from  "./Pages/gigs/Gigs"
+import Message from "./Pages/message/Message"
+import Add from "./Pages/add/Add";
 function App() {
   const Layout = () => {
     return (
@@ -25,6 +31,34 @@ function App() {
         {
           path : "/",
           element : <Homepage />
+        },
+        {
+          path : "/orders",
+          element : <Orders />
+        },
+        {
+          path : "/gig/:id",
+          element : <Gig />
+        },
+        {
+          path : "/gigs",
+          element : <Gigs />
+        },
+        {
+          path : "/mygigs",
+          element : <MyGigs />
+        },
+        {
+          path : "/add",
+          element : <Add />
+        },
+        {
+          path : "/message",
+          element : <Message />
+        },
+        {
+          path : "/messages",
+          element : <Messages />
         }
       ]
     },
