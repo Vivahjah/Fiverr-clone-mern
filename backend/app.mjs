@@ -1,8 +1,14 @@
-
 import "express-async-errors"
 import cors from "cors"
 import express from "express"
 import dotenv from 'dotenv';
+import userRouter from "./routes/user.js"
+import orderRouter from "./routes/order.js"
+import conversationRouter from "./routes/conversation.js"
+import messageRouter from "./routes/message.js"
+import gigRouter from "./routes/gig.js"
+import reviewRouter from "./routes/review.js"
+import authRouter from "./routes/auth.js"
 
 const app = express()
 dotenv.config();
@@ -21,7 +27,13 @@ import connectDB from "./db/connect.js";
 
 //routes
 
-
+app.use('/api/v1/auth', authRouter)
+app.use('/api/v1/user', userRouter)
+app.use('/api/v1/order', orderRouter)
+app.use('/api/v1/conversation', conversationRouter)
+app.use('/api/v1/message', messageRouter)
+app.use('/api/v1/gig', gigRouter)
+app.use('/api/v1/review', reviewRouter)
 
 // app.use(notFoundMiddleware);
 // app.use(errorHandlerMiddleware);
