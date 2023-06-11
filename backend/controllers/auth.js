@@ -2,6 +2,8 @@ import User from "../models/user.js";
 import { StatusCodes } from "http-status-codes";
 import { BadRequestError, UnauthenticatedError } from "../errors/index.js";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+
 
 const register = async (req, res) => {
   const hashPassword = bcrypt.hashSync(req.body.password, 5);
@@ -23,9 +25,17 @@ const login = async (req, res) => {
   if (!doPasswordMatch) {
     throw new UnauthenticatedError("Incorrect password or username");
   }
-
+  const TOKEN = jwt.sign(
+    { id: user._id,  isSeller :user.isSeller },
+    process.env.JWT_SECRET,
+    { expiresIn: process.env.JWT_LIFETIME }
+  );
   const { password, ...info } = user._doc;
-  res.status(StatusCodes.OK).json(info);
+  res.cookie("accessToken", TOKEN, {httpOnly : true}).status(StatusCodes.OK).json(info);
 };
-const logout = () => {};
+const logout = (req,res) => {
+  res.clearCookie("accessToken", {
+    sameSite : "none", secure : true
+  }).status(StatusCodes.OK).send("User have been logged out")
+};
 export { login, register, logout };

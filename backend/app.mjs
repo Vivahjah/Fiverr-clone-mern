@@ -9,6 +9,7 @@ import messageRouter from "./routes/message.js"
 import gigRouter from "./routes/gig.js"
 import reviewRouter from "./routes/review.js"
 import authRouter from "./routes/auth.js"
+import cookieParser from "cookie-parser";
 
 const app = express()
 dotenv.config();
@@ -16,6 +17,7 @@ dotenv.config();
 
 
 app.use(express.json());
+app.use(cookieParser());
 app.use(cors());
 
 //connect to DB
