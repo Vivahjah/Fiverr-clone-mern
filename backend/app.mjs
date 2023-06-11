@@ -24,6 +24,8 @@ import connectDB from "./db/connect.js";
 //error-handler
 // const notFoundMiddleware = require('./middleware/not-found');
 // const errorHandlerMiddleware = require('./middleware/error-handler');
+import notFoundMiddleware from "./middleware/not-found.js"
+import errorHandlerMiddleware from "./middleware/error-handler.js"
 
 //routes
 
@@ -35,8 +37,8 @@ app.use('/api/v1/message', messageRouter)
 app.use('/api/v1/gig', gigRouter)
 app.use('/api/v1/review', reviewRouter)
 
-// app.use(notFoundMiddleware);
-// app.use(errorHandlerMiddleware);
+app.use(notFoundMiddleware);
+app.use(errorHandlerMiddleware);
 
 
 
