@@ -4,27 +4,30 @@
     align-items: center;
     background-color: #013914;
     color: white;
-    transition: 0.5s all ease;
     position: sticky;
     top: 0;
     z-index: 999;
+    transition: 0.5s all ease;
     &.active {
         background-color: white;
         color: black;
+        button {
+            background-color: white !important;
+            color: #1dbf73 !important;
+            border: 1px solid #1dbf73 !important;
+        }
     }
     .container {
         width: 1400px;
         display: flex;
+        align-items: center;
         justify-content: space-between;
-        padding: 20px 0;
+        padding: 20px 0px;
         .logo {
-            font-weight: 600;
             font-size: 34px;
-            // .text {
-            //     color: white;
-            //     text-decoration: none;
-            // }
+            font-weight: bold;
             .dot {
+                font-weight: bold;
                 color: #1dbf73;
             }
         }
@@ -32,33 +35,38 @@
             display: flex;
             align-items: center;
             gap: 24px;
-            font-weight: 600;
+            font-family: "Montserrat", sans-serif;
+            font-weight: 500;
+            span {
+                white-space: nowrap;
+            }
             .user {
                 display: flex;
                 align-items: center;
                 gap: 10px;
-                position: relative;
                 cursor: pointer;
+                position: relative;
                 img {
-                    width: 30px;
-                    height: 30px;
+                    width: 32px;
+                    height: 32px;
                     border-radius: 50%;
+                    object-fit: cover;
                 }
                 .options {
-                    width: 200px;
-                    display: flex;
-                    flex-direction: column;
-                    color: grey;
                     position: absolute;
                     top: 50px;
                     right: 0;
                     padding: 20px;
-                    border-radius: 5px;
-                    border: 1px solid lightblue;
-                    background-color: #fff;
-                    padding: 20px 10px;
+                    background-color: white;
+                    border-radius: 10px;
+                    z-index: 999;
+                    border: 1px solid lightgrey;
+                    display: flex;
+                    flex-direction: column;
                     gap: 10px;
-                    transition: 1s all ease-in-out;
+                    width: 200px;
+                    font-weight: 300;
+                    color: gray;
                 }
             }
             button {
@@ -76,16 +84,18 @@
         }
     }
     hr {
-        width: 100%;
+        width: calc(100% - 2px);
         height: 0;
-        border: 0.5px solid lightgray;
+        border-top: 0.5px solid #ebe9e9;
+        border-bottom: 0.5px solid #ebe9e9;
     }
     .menu {
         width: 1400px;
         padding: 10px 0px;
         display: flex;
         justify-content: space-between;
-        font-weight: 400;
-        color: grey;
+        color: gray;
+        font-weight: 300;
+        font-family: "Montserrat", sans-serif;
     }
 }

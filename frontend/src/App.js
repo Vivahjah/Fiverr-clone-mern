@@ -12,6 +12,8 @@ import Gig from  "./Pages/gig/Gig"
 import Gigs from  "./Pages/gigs/Gigs"
 import Message from "./Pages/message/Message"
 import Add from "./Pages/add/Add";
+import Login from "./Pages/login/Login";
+import Register from "./Pages/register/Register";
 function App() {
   const Layout = () => {
     return (
@@ -42,6 +44,14 @@ function App() {
         {
           path : "/gigs",
           element : <Gigs />
+        },
+        {
+          path: "/login",
+          element: <Login />,
+        },
+        {
+          path: "/register",
+          element: <Register />,
         },
         {
           path : "/mygigs",

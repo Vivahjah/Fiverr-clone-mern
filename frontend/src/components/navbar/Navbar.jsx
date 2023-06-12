@@ -1,12 +1,22 @@
 import React, { useEffect, useState } from "react";
 import "./Navbar.scss";
 import { Link, useLocation } from "react-router-dom";
+import axios from "../../utils/axios";
 
 const Navbar = () => {
   const [active, setActive] = useState(false);
   const [menu, setMenu] = useState(false);
   const {pathname} = useLocation(); //looking out for the url location
 
+const handleLogout  = async () => {
+  try {
+    const res = await axios.post("/auth/logout")
+    localStorage.clear("user")
+    console.log(res);
+  } catch (error) {
+    console.log(error)
+  }
+}
   const isActive = () => {
     window.scrollY > 0 ? setActive(true) : setActive(false);
   };
@@ -18,11 +28,8 @@ const Navbar = () => {
     };
   }, []);
 
-  const currentUser = {
-    id: 1,
-    isSeller: false,
-    username: "John",
-  };
+  const currentUser = JSON.parse(localStorage.getItem("user"))
+
   return (
     <div className={`${(active || pathname !=="/") && "active"} navbar`}>
       <div className="container">
@@ -37,12 +44,12 @@ const Navbar = () => {
           <span>Explore</span>
           <span>English</span>
           {!currentUser && <span>Sign in</span>}
-          {currentUser.isSeller && <span>Become a Seller</span>}
+          {currentUser?.isSeller && <span>Become a Seller</span>}
           {!currentUser && <button>Join</button>}
           {currentUser && (
             <div className="user">
               <img
-                src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8YXZhdGFyfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60"
+                src={currentUser.img || "/img/noavatar.jpg"}
                 alt="user-img"
               />
               <span onClick={() => setMenu(!menu)}>{currentUser.username}</span>
@@ -55,7 +62,7 @@ const Navbar = () => {
                     </>
                   )}
                   <Link className="link" to="/orders">Order</Link>
-                  <Link className="link" to="/">Logout</Link>
+                  <Link className="link" onClick={handleLogout}>Logout</Link>
                 </div>
               )}
             </div>

@@ -1,15 +1,34 @@
-import React, { useState } from 'react'
-import "./Login.scss"
+import React, { useState } from "react";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import axios from "../../utils/axios";
+import "./Login.scss";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
-  const [username, setUsername] = useState("")
-  const [password, setPassword] = useState("")
-  const [error, setError] = useState(null)
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate()
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    console.log("Clicked");
-  }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!email || !password) {
+      return toast.error("Fill in email and password");
+    }
+    try {
+      const res = await axios.post("/auth/login", {
+        email,
+        password,
+      });
+      localStorage.setItem("user", JSON.stringify(res.data))
+      toast.success("login succefull");
+      navigate("/")
+      
+    } catch (error) {
+      toast.error(error?.response?.data.msg);
+      console.log(error);
+    }
+  };
   return (
     <div className="login">
       <form onSubmit={handleSubmit}>
@@ -18,8 +37,8 @@ const Login = () => {
         <input
           name="username"
           type="text"
-          placeholder="johndoe"
-          onChange={(e) => setUsername(e.target.value)}
+          placeholder="johndoe@gmail.com"
+          onChange={(e) => setEmail(e.target.value)}
         />
 
         <label htmlFor="">Password</label>
@@ -28,11 +47,10 @@ const Login = () => {
           type="password"
           onChange={(e) => setPassword(e.target.value)}
         />
-        <button type="submit">Login</button>
-        {error && error}
+        <button>Login</button>
       </form>
     </div>
   );
-}
+};
 
 export default Login;
