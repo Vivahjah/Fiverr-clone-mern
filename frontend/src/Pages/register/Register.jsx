@@ -1,27 +1,43 @@
 import React, { useState } from "react";
 import "./Register.scss";
+import uploadImage from "../../utils/upload";
+import axios from "../../utils/axios";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
+  const navigate = useNavigate();
   const [file, setFile] = useState(null);
   const [user, setUser] = useState({
-    name: "",
+    username: "",
     email: "",
     password: "",
     desc: "",
+    isSeller: false,
+    image: "",
   });
 
-  const handleSubmit = (e) => {
+  const handleChange = (e) => {
+    setUser((prev) => {
+      return { ...prev, [e.target.name]: e.target.value };
+    });
+  };
+
+  const handleSeller = (e) => {
+    setUser((prev) => {
+      return { ...prev, isSeller: e.target.checked };
+    });
+  };
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setUser
-    // setUser((prev) => return {...prev, [e.target.name] : [e.target.value]})
-    
+    const url = await uploadImage(file);
+    try {
+      await axios.post("/auth/register", { ...user, image: url });
+      navigate("/")
+    } catch (error) {
+      console.log(error);
+    }
   };
-  const handleSeller = () => {
-    console.log("FK");
-  };
-  const handleChange = () => {
-    console.log("FK");
-  };
+  console.log(user);
 
   return (
     <div className="register">

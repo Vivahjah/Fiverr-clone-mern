@@ -6,8 +6,15 @@ import jwt from "jsonwebtoken";
 
 
 const register = async (req, res) => {
-  const hashPassword = bcrypt.hashSync(req.body.password, 5);
-  const newUser = new User({ ...req.body, password: hashPassword });
+  if(!req.body){
+    throw new BadRequestError("fill in all field")
+  }
+
+  const saltRounds = 10; // Number of rounds for salt generation
+  const hashedPassword = await bcrypt.hash(req.body.password, saltRounds);
+
+
+  const newUser = new User({ ...req.body, password: hashedPassword });
   await newUser.save();
 
   res.status(StatusCodes.CREATED).json("New User Created");
