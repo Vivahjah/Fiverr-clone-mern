@@ -3,6 +3,8 @@ import "./Register.scss";
 import uploadImage from "../../utils/upload";
 import axios from "../../utils/axios";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -32,6 +34,7 @@ const Register = () => {
     const url = await uploadImage(file);
     try {
       await axios.post("/auth/register", { ...user, image: url });
+toast.success("Account created successfully")
       navigate("/")
     } catch (error) {
       console.log(error);
