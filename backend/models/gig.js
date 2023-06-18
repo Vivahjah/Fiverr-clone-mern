@@ -1,37 +1,73 @@
 import mongoose from "mongoose";
-
 const { Schema } = mongoose;
 
-const GigSchema = new Schema({
-    gigId : {
-        type : String,
-        required : true
+const GigSchema = new Schema(
+  {
+    userId: {
+      type: String,
+      required: true,
     },
-    userId : {
-        type : String,
-        required : true
+    title: {
+      type: String,
+      required: true,
     },
-    gigId : {
-        type : String,
-        required : true
+    desc: {
+      type: String,
+      required: true,
     },
-    star : {
-        type : Number,
-        default : 0,
-        enum : [1,2,3,4,5]
+    totalStars: {
+      type: Number,
+      default: 0,
     },
-    desc : {
-        type : String,
-        required : true
+    stars: {
+      type: Number,
+      default: 0,
     },
-    gigId : {
-        type : String,
-        required : true
+    cat: {
+      type: String,
+      required: true,
     },
- 
-}, 
-{
-    timestamps: true
-});
+    price: {
+      type: Number,
+      required: true,
+    },
+    cover: {
+      type: String,
+      required: true,
+    },
+    images: {
+      type: [String],
+      required: false,
+    },
+    
+    shortTitle: {
+      type: String,
+      required: true,
+    },
+    shortDesc: {
+      type: String,
+      required: true,
+    },
+    deliveryTime: {
+      type: Number,
+      required: true,
+    },
+    revisionNumber: {
+      type: Number,
+      required: true,
+    },
+    features: {
+      type: [String],
+      required: false,
+    },
+    sales: {
+      type: Number,
+      default: 0,
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
 
-export default mongoose.model("Gig", GigSchema)
+export default mongoose.model("Gig", GigSchema);

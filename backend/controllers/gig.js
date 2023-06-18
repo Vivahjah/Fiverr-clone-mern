@@ -5,6 +5,7 @@ import { StatusCodes } from "http-status-codes";
 
 
 const createGig = async (req, res) => {
+  
 if(!req.isSeller){
     throw new AccessDeniedError("only sellers can create gig")
 }
@@ -12,19 +13,19 @@ if (!req.body)
 {
     throw new BadRequestError("fill all fields")
 }
-  const newGig = new Gig({
+  const newGig =  new Gig({
     userId : req.userId, ...req.body
   })
   const gig = await newGig.save()
   res.status(StatusCodes.CREATED).json(gig)
 };
-const getGigs = async () => {
+const getSingleGig = async () => {
   console.log("gig");
 };
-const getGig = async () => {
+const getGigs = async () => {
   console.log("gig");
 };
 const deleteGig = async () => {
   console.log("gig");
 };
-export { createGig, getGigs, getGig, deleteGig };
+export { createGig, getGigs, getSingleGig, deleteGig };
