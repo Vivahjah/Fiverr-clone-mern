@@ -1,6 +1,6 @@
 import express from "express";
 import Gig from "../models/gig.js";
-import { AccessDeniedError, BadRequestError } from "../errors/index.js";
+import { AccessDeniedError, BadRequestError, NotFoundError } from "../errors/index.js";
 import { StatusCodes } from "http-status-codes";
 
 
@@ -25,7 +25,19 @@ const getSingleGig = async () => {
 const getGigs = async () => {
   console.log("gig");
 };
-const deleteGig = async () => {
-  console.log("gig");
+const deleteGig = async (req, res) => {
+  const gig = await Gig.findById(req.params.id)
+  if (!gig || gig === "undefined") {
+    throw new NotFoundError(`Cannot find gig with Id ${req.params.id}`)
+  }
+  
+  if (gig.userId !== req.userId ){
+    throw new AccessDeniedError("You can only delete your gig")
+  }
+  await Gig.findByIdAndDelete(req.params.id)
+  
+  res.status(StatusCodes.OK).json("Gig have been deleted")
+
+ 
 };
 export { createGig, getGigs, getSingleGig, deleteGig };
