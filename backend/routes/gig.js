@@ -7,8 +7,8 @@ const router = express.Router()
 
 router.post("/" , verifyToken, createGig)
 router.delete("/:id" , verifyToken, deleteGig)
-router.get("/:id" , verifyToken, getSingleGig)
-router.get("/" , verifyToken, getGigs)
+router.get("/:id" ,  getSingleGig)
+router.get("/" ,  getGigs)
 
 
 
