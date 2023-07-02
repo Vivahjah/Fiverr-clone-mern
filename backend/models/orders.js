@@ -24,13 +24,10 @@ const OrderSchema = new Schema({
     required : true,
   },
   isCompleted : {
-    type : Bolean,
+    type : Boolean,
    default: false
   },
-  isCompleted : {
-    type : Bolean,
-   default: false
-  },
+  
   payment_intent : {
     type : String,
    required : true,
