@@ -1,9 +1,11 @@
-import express from "express"
+const createOrders = async (req, res) => {
+    console.log("review");
+  };
 
-const router = express.Router()
+  
+const getOrders = async (req, res) => {
+    console.log("review");
+  };
 
 
-
-
-
-export default router
+  export {createOrders, getOrders}

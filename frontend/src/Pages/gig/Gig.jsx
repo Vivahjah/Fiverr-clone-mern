@@ -4,7 +4,7 @@ import { Slider } from "infinite-react-carousel/lib";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import axios from "../../utils/axios";
-import { Reviews } from "../../components/reviews/Reviews";
+import  Reviews  from "../../components/reviews/Reviews";
 
 function Gig() {
   const { id } = useParams();
@@ -16,6 +16,7 @@ function Gig() {
       return response.data;
     },
   });
+  const userId = data?.userId;
 
   const {
     isLoading: isLoadingUser,
@@ -24,11 +25,12 @@ function Gig() {
   } = useQuery({
     queryKey: ["user"],
     queryFn: async () => {
-      const response = await axios.get(`/user/${data.userId}`);
+      const response = await axios.get(`/user/${userId}`);
       return response.data;
     },
+    enabled : !!userId
   });
-  console.log(dataUser);
+  console.log(dataUser, "dataUser");
   return (
     <div className="gig">
       {isLoading ? (
@@ -127,7 +129,7 @@ function Gig() {
                 <p>{dataUser?.desc}</p>
               </div>
             </div>
-            <Reviews />
+            <Reviews gigId={id} />
           </div>
           <div className="right">
             <div className="price">
