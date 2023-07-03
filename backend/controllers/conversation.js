@@ -1,9 +1,22 @@
-import express from "express"
+const createConversation = async (req, res) => {
+  console.log("xx");
+};
 
-const router = express.Router()
+const getSingleConversation = async (req, res) => {
+  console.log("xxx");
+};
 
+const getConversation = async (req, res) => {
+  console.log("xxx");
+};
 
+const updateConversation = async (req, res) => {
+  console.log("xxx");
+};
 
-
-
-export default router
+export {
+  createConversation,
+  getSingleConversation,
+  getConversation,
+  updateConversation,
+};
