@@ -4,8 +4,7 @@ import axios from "../../utils/axios";
 import Review from "../review/Review";
 import "./Reviews.scss";
 const Reviews = ({ gigId }) => {
-
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
 
   const { isLoading, error, data } = useQuery({
     queryKey: ["reviews"],
@@ -14,14 +13,13 @@ const Reviews = ({ gigId }) => {
       return response.data;
     },
   });
-
   const mutation = useMutation({
     mutationFn: (review) => {
       return axios.post("/review", review);
     },
-    onSuccess:()=>{
-      queryClient.invalidateQueries(["reviews"])
-    }
+    onSuccess: () => {
+      queryClient.invalidateQueries(["reviews"]);
+    },
   });
 
   const handleSubmit = (e) => {

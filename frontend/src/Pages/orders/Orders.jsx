@@ -1,10 +1,13 @@
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import axios from "../../utils/axios";
+import { useNavigate } from "react-router-dom";
 
 import "./Orders.scss";
 
 const Orders = () => {
+  const navigate = useNavigate();
+  const currentUser = JSON.parse(localStorage.getItem("user"));
   const { isLoading, error, data } = useQuery({
     queryKey: ["order"],
     queryFn: async () => {
@@ -12,8 +15,23 @@ const Orders = () => {
       return response.data;
     },
   });
-  console.log(data, "orders");
-  const currentUser = JSON.parse(localStorage.getItem("user"));
+  const handleContact = async (order) => {
+    const sellerId = order.sellerId;
+    const buyerId = order.buyerId;
+    const id = sellerId + buyerId;
+
+    try {
+     const res =  await axios.get(`/conversation/${id}`);
+     navigate(`/message/${res.data.id}`);
+    } catch (error) {
+      if (error.response.status === 404) {
+        const res = await axios.post(`/conversation/`, {
+          to: currentUser.seller ? sellerId : buyerId,
+        });
+        navigate(`/message/${res.data.id}`);
+      }
+    }
+  };
 
   return (
     <div className="orders">
@@ -48,7 +66,12 @@ const Orders = () => {
                   </td>
 
                   <td>
-                    <img className="message" src="./img/message.png" alt="" />
+                    <img
+                      className="message"
+                      src="./img/message.png"
+                      alt=""
+                      onClick={() => handleContact(order)}
+                    />
                   </td>
                 </tr>
               </tbody>

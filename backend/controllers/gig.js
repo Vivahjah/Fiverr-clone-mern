@@ -19,7 +19,7 @@ const createGig = async (req, res) => {
     ...req.body,
   });
   const gig = await newGig.save();
-  res.status(StatusCodes.CREATED).json( gig );
+  res.status(StatusCodes.CREATED).json(gig);
 };
 
 const getSingleGig = async (req, res) => {
@@ -28,7 +28,7 @@ const getSingleGig = async (req, res) => {
   if (!gig) {
     throw new NotFoundError(`Gig not found with Id ${req.params.id}`);
   }
-  res.status(StatusCodes.OK).json( gig );
+  res.status(StatusCodes.OK).json(gig);
 };
 
 const getGigs = async (req, res) => {
@@ -45,8 +45,8 @@ const getGigs = async (req, res) => {
     }),
     ...(q.search && { title: { $regex: q.search, $options: "i" } }),
   };
-  const gigs = await Gig.find(filters).sort({[q.sort] : -1});
-  res.status(StatusCodes.OK).json(gigs );
+  const gigs = await Gig.find(filters).sort({ [q.sort]: -1 });
+  res.status(StatusCodes.OK).json(gigs);
 };
 
 const deleteGig = async (req, res) => {

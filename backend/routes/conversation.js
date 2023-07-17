@@ -7,8 +7,8 @@ const router = express.Router()
 
 router.post("/" , verifyToken, createConversation)
 router.get("/:id" , verifyToken, getSingleConversation)
-router.get("/" ,  getConversations)
-router.put("/" ,  updateConversation)
+router.get("/" ,verifyToken,  getConversations)
+router.put("/:id" ,verifyToken,  updateConversation)
 
 
 

@@ -2,7 +2,7 @@ import { StatusCodes } from "http-status-codes";
 import Conversation from "../models/conversation.js";
 import { NotFoundError } from "../errors/index.js";
 
- const createConversation = async (req, res) => {
+const createConversation = async (req, res) => {
   const newConversation = new Conversation({
     id: req.isSeller ? req.userId + req.body.to : req.body.to + req.userId,
     sellerId: req.isSeller ? req.userId : req.body.to,
@@ -15,7 +15,7 @@ import { NotFoundError } from "../errors/index.js";
   res.status(StatusCodes.CREATED).json(savedConversation);
 };
 
- const updateConversation = async (req, res) => {
+const updateConversation = async (req, res) => {
   const updatedConversation = await Conversation.findOneAndUpdate(
     { id: req.params.id },
     {
@@ -31,20 +31,25 @@ import { NotFoundError } from "../errors/index.js";
   res.status(StatusCodes.OK).json(updatedConversation);
 };
 
- const getSingleConversation = async (req, res) => {
+const getSingleConversation = async (req, res) => {
   const conversation = await Conversation.findOne({ id: req.params.id });
   if (!conversation) {
-    throw new NotFoundError("Not found")
-  } 
+    throw new NotFoundError("Not found");
+  }
   res.status(StatusCodes.OK).json(conversation);
 };
 
- const getConversations = async (req, res, next) => {
+const getConversations = async (req, res) => {
   const conversations = await Conversation.find(
     req.isSeller ? { sellerId: req.userId } : { buyerId: req.userId }
-  ).sort({ updatedAt: -1 });
+  )
+  .sort({ updatedAt: -1 });
   res.status(StatusCodes.OK).json(conversations);
 };
 
-
-export {getConversations,getSingleConversation,updateConversation,createConversation}
+export {
+  getConversations,
+  getSingleConversation,
+  updateConversation,
+  createConversation,
+};

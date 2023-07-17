@@ -1,40 +1,44 @@
 import React, { useEffect, useState } from "react";
-import "./Navbar.scss";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import axios from "../../utils/axios";
+import "./Navbar.scss";
 
-const Navbar = () => {
+function Navbar() {
   const [active, setActive] = useState(false);
-  const [menu, setMenu] = useState(false);
-  const {pathname} = useLocation(); //looking out for the url location
+  const [open, setOpen] = useState(false);
 
-const handleLogout  = async () => {
-  try {
-    const res = await axios.post("/auth/logout")
-    localStorage.clear("user")
-    console.log(res);
-  } catch (error) {
-    console.log(error)
-  }
-}
+  const { pathname } = useLocation();
+
   const isActive = () => {
     window.scrollY > 0 ? setActive(true) : setActive(false);
   };
+
   useEffect(() => {
     window.addEventListener("scroll", isActive);
-
     return () => {
       window.removeEventListener("scroll", isActive);
     };
   }, []);
 
-  const currentUser = JSON.parse(localStorage.getItem("user"))
+  const currentUser = JSON.parse(localStorage.getItem("user"));
+
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+      await axios.post("/auth/logout");
+      localStorage.setItem("user", null);
+      navigate("/");
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
-    <div className={`${(active || pathname !=="/") && "active"} navbar`}>
+    <div className={active || pathname !== "/" ? "navbar active" : "navbar"}>
       <div className="container">
         <div className="logo">
-          <Link to="/" className="link">
+          <Link className="link" to="/">
             <span className="text">fiverr</span>
           </Link>
           <span className="dot">.</span>
@@ -43,50 +47,82 @@ const handleLogout  = async () => {
           <span>Fiverr Business</span>
           <span>Explore</span>
           <span>English</span>
-          {!currentUser && <Link to="/login" className="link">Sign in</Link>}
-          {currentUser?.isSeller && <span>Become a Seller</span>}
-          {!currentUser && <button>Join</button>}
-          {currentUser && (
-            <div className="user">
-              <img
-                src={currentUser.img || "/img/noavatar.jpg"}
-                alt="user-img"
-              />
-              <span onClick={() => setMenu(!menu)}>{currentUser.username}</span>
-              {menu && (
+          {!currentUser?.isSeller && <span>Become a Seller</span>}
+          {currentUser ? (
+            <div className="user" onClick={() => setOpen(!open)}>
+              <img src={currentUser.img || "/img/noavatar.jpg"} alt="" />
+              <span>{currentUser?.username}</span>
+              {open && (
                 <div className="options">
-                  {!currentUser.isSeller && (
+                  {currentUser.isSeller && (
                     <>
-                      <Link className="link" to="/mygigs">Gigs</Link>
-                      <Link className="link" to="/add">Add new Gigs</Link>
+                      <Link className="link" to="/mygigs">
+                        Gigs
+                      </Link>
+                      <Link className="link" to="/add">
+                        Add New Gig
+                      </Link>
                     </>
                   )}
-                  <Link className="link" to="/orders">Order</Link>
-                  <Link className="link" onClick={handleLogout}>Logout</Link>
+                  <Link className="link" to="/orders">
+                    Orders
+                  </Link>
+                  <Link className="link" to="/messages">
+                    Messages
+                  </Link>
+                  <Link className="link" onClick={handleLogout}>
+                    Logout
+                  </Link>
                 </div>
               )}
             </div>
+          ) : (
+            <>
+              <Link to="/login" className="link">Sign in</Link>
+              <Link className="link" to="/register">
+                <button>Join</button>
+              </Link>
+            </>
           )}
         </div>
       </div>
-      {(active || pathname !=="/") && (
+      {(active || pathname !== "/") && (
         <>
           <hr />
           <div className="menu">
-           <Link to="/" className="link">Graphics & Designs</Link>
-           <Link to="/" className="link">Videos & Animations</Link>
-           <Link to="/" className="link">Writing & Translation</Link>
-           <Link to="/" className="link">AI Services</Link>
-           <Link to="/" className="link">Digital Marketing</Link>
-           <Link to="/" className="link">Music & Audio</Link>
-           <Link to="/" className="link">Programming and Tech</Link>
-           <Link to="/" className="link">Bussiness</Link>
-           <Link to="/" className="link">Lifestyle</Link>
+            <Link className="link menuLink" to="/">
+              Graphics & Design
+            </Link>
+            <Link className="link menuLink" to="/">
+              Video & Animation
+            </Link>
+            <Link className="link menuLink" to="/">
+              Writing & Translation
+            </Link>
+            <Link className="link menuLink" to="/">
+              AI Services
+            </Link>
+            <Link className="link menuLink" to="/">
+              Digital Marketing
+            </Link>
+            <Link className="link menuLink" to="/">
+              Music & Audio
+            </Link>
+            <Link className="link menuLink" to="/">
+              Programming & Tech
+            </Link>
+            <Link className="link menuLink" to="/">
+              Business
+            </Link>
+            <Link className="link menuLink" to="/">
+              Lifestyle
+            </Link>
           </div>
+          <hr />
         </>
       )}
     </div>
   );
-};
+}
 
 export default Navbar;
