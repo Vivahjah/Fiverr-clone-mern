@@ -27,5 +27,5 @@ export const createMessage = async (req, res) => {
 };
 export const getMessages = async (req, res) => {
   const messages = await Message.find({ conversationId: req.params.id });
-  res.status(200).send(messages);
+  res.status(StatusCodes.OK).send(messages);
 };
