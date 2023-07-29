@@ -33,7 +33,6 @@ const getSingleGig = async (req, res) => {
 
 const getGigs = async (req, res) => {
   const q = req.query;
-
   const filters = {
     ...(q.userId && { userId: q.userId }),
     ...(q.cat && { cat: q.cat }),

@@ -1,12 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Gig.scss";
 import { Slider } from "infinite-react-carousel/lib";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import axios from "../../utils/axios";
-import  Reviews  from "../../components/reviews/Reviews";
+import Reviews from "../../components/reviews/Reviews";
+import { toast } from "react-toastify";
 
 function Gig() {
+  const [payResult, setPayResut] = useState("");
+  // const { email } = JSON.parse(localStorage.getItem("user"));
   const { id } = useParams();
 
   const { isLoading, error, data } = useQuery({
@@ -28,9 +31,30 @@ function Gig() {
       const response = await axios.get(`/user/${userId}`);
       return response.data;
     },
-    enabled : !!userId
+    enabled: !!userId,
   });
   console.log(dataUser, "dataUser");
+
+  const handlePayment = async () => {
+    const { email } = JSON.parse(localStorage.getItem("user"));
+    if(!email){
+     return toast.success("you are not logged in !!");
+
+    }
+    try {
+      const res = await axios.post(`order/acceptpayment/${id}`, { email });
+      const data = JSON.parse(res.data);
+      setPayResut(data);
+      console.log(payResult);
+
+      window.open(data.data.authorization_url, "_blank");
+      // window.location.href = data.data.authorization_url;
+      console.log(data.data.authorization_url);
+      // console.log(res.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <div className="gig">
       {isLoading ? (
@@ -43,7 +67,7 @@ function Gig() {
             <span className="breadcrumbs">
               Fiverr &gt; Graphics &amp; Design &gt;
             </span>
-            <h1>{data.title}</h1>
+            <h1>{data?.title}</h1>
             {isLoadingUser ? (
               "loading..."
             ) : errorUser ? (
@@ -155,7 +179,7 @@ function Gig() {
                 </div>
               ))}
             </div>
-            <button>Continue</button>
+            <button onClick={handlePayment}>Continue</button>
           </div>
         </div>
       )}
